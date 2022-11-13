@@ -6,6 +6,9 @@ import {
 } from "@heroicons/react/24/solid";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { Dialog } from "@mui/material";
+import titulo from "../assets/titulo.png";
+import { motion } from "framer-motion";
+import bg from "../assets/bg.mp4";
 
 const MainMenu = () => {
   const [infoPodcast, setInfoPodcast] = useState([
@@ -28,7 +31,6 @@ const MainMenu = () => {
   //   console.log("paso", paso);
   // }, [paso]);
 
-
   const handleNext = () => {
     if (paso < infoPodcast.length) {
       setPaso(paso + 1);
@@ -46,74 +48,60 @@ const MainMenu = () => {
   };
 
   return (
-    <div>
-      <div className="absolute z-50">
-        <InformationCircleIcon
-          className="h-10 w-10 m-7"
-          onClick={() => setInstructions(true)}
-        />
-      </div>
-      <div className="absolute z-20 w-full h-screen">
-        <div className="flex mx-8 justify-between h-screen items-center">
-          <button
-            className="flex items-center justify-center p-2 rounded-full bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            onClick={() => handlePrev()}
+    <div className="max-h-screen">
+      <video
+        autoPlay
+        loop
+        muted
+        className="absolute object-cover w-full h-full"
+      >
+        <source src={bg} type="video/mp4" />
+      </video>
+      <button
+        className="bg-gray-200 rounded-full p-2 m-10 absolute"
+        onClick={() => setInstructions(true)}
+      >
+        <InformationCircleIcon className="h-6 w-6" />
+      </button>
+      <div className="grid grid-cols-3 h-screen">
+        <div className="flex flex-col justify-center items-center mx-32 col-span-2">
+          <motion.img
+            initial={{ y: -5 }}
+            animate={{ y: 5 }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              repeatType: "reverse",
+            }}
+            src={titulo}
+            alt="titulo"
           >
-            <ChevronLeftIcon className="w-7 h-7 text-gray-500" />
-          </button>
-          <button
-            className="flex items-center justify-center p-2 rounded-full bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            onClick={() => handleNext()}
-          >
-            <ChevronRightIcon className="w-7 h-7 text-gray-500" />
-          </button>
+            {/* <img src={titulo} alt="titulo" className="" /> */}
+          </motion.img>
+        </div>
+        <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-row justify-center items-center">
+            <button
+              className="bg-gray-200 rounded-full p-2 m-2"
+              onClick={handlePrev}
+            >
+              <ChevronLeftIcon className="h-6 w-6" />
+            </button>
+            <button
+              className="bg-gray-200 rounded-full p-2 m-2"
+              onClick={handleNext}
+            >
+              <ChevronRightIcon className="h-6 w-6" />
+            </button>
+          </div>
+          <div className="flex flex-col justify-center items-center">
+            <h1 className="text-2xl font-bold">
+              {infoPodcast[paso - 1].title}
+            </h1>
+            <p className="text-center">{infoPodcast[paso - 1].description}</p>
+          </div>
         </div>
       </div>
-      <div className="flex flex-col justify-center h-screen">
-        {paso === 1 && (
-          <div className="h-screen flex flex-col justify-end mb-10">
-            <div className="flex justify-center">
-              <PlayCircleIcon className="h-32 w-32" />
-              <div className="flex-col pl-20 ml-16 border-l-4 border-black">
-                <h1 className="text-8xl font-black text-start">
-                  {infoPodcast[0]?.title}
-                </h1>
-                <p className="text-2xl font-semibold text-start">
-                  {infoPodcast[0]?.description}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-      {instructions && (
-        <Dialog open={instructions} onClose={() => setInstructions(false)}>
-          <div className="flex flex-col items-center justify-center p-4">
-            <div className="flex items-center justify-between w-full">
-              <button
-                className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                onClick={() => handlePrev()}
-              >
-                <ChevronLeftIcon className="w-5 h-5 text-gray-500" />
-              </button>
-              <div className="flex flex-col items-center justify-center">
-                <h1 className="text-2xl font-bold text-gray-700">
-                  {infoPodcast[paso - 1].title}
-                </h1>
-                <p className="text-sm text-gray-500">
-                  {infoPodcast[paso - 1].description}
-                </p>
-              </div>
-              <button
-                className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                onClick={() => handleNext()}
-              >
-                <ChevronRightIcon className="w-5 h-5 text-gray-500" />
-              </button>
-            </div>
-          </div>
-        </Dialog>
-      )}
     </div>
   );
 };
