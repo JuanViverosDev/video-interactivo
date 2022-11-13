@@ -1,10 +1,15 @@
-
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import MainMenu from "./app/MainMenu";
 
 function App() {
   return (
-    <div className="App">
-      Prueba
-    </div>
+    <BrowserRouter>
+      <div className="overflow-hidden">
+        <Routes>
+          <Route path="/" element={<MainMenu/>} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
